@@ -1,7 +1,8 @@
 // serve http requests
-const express = require('express');
+import express from 'express';
+import weaviate from 'weaviate-ts-client';
 const app = express();
-const port = 3000;
+const port = 4000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
@@ -17,12 +18,21 @@ app.get('/', (req, res) => {
 //     // .withLimit(1)
 //     .do();
 
+// get the file, take sha256 hash and save it to the filesystem
+app.post('/upload', (req, res) => {
+    const fs = require('fs');
+    const { image } = req.body;
+    const buffer = Buffer.from(image, 'base64');
+    fs.writeFileSync('image.jpg', buffer);
+    res.send('ok');
+});
+
+
 app.post('/similar', async (req, res) => {
     const client = weaviate.client({
         scheme: 'http',
         host: '137.184.41.20:8080',
     });
-    const weaviate = require("weaviate-ts-client");
     const { image, distance } = req.body;
     const test = Buffer.from(image, 'base64').toString('base64');
     const resImage = await client.graphql.get()
@@ -47,3 +57,14 @@ app.post('/similar', async (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
+
+// error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+process.on('uncaughtException', function (err) {
+    console.log('Caught exception: ', err);
+});
+
+
