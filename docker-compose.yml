@@ -28,4 +28,8 @@ services:
     image: semitechnologies/img2vec-pytorch:resnet50
     environment:
       ENABLE_CUDA: '0'
+  indexer:
+    build:
+      context: indexer
+      dockerfile: Dockerfile
 ...
