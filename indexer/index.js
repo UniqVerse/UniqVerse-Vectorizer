@@ -23,7 +23,7 @@ app.post('/upload', (req, res) => {
     const fs = require('fs');
     const { image } = req.body;
     const buffer = Buffer.from(image, 'base64');
-    fs.writeFileSync('image.jpg', buffer);
+    fs.writeFileSync('nfts/image.jpg', buffer);
     res.send('ok');
 });
 

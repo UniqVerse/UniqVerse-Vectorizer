@@ -32,4 +32,8 @@ services:
     build:
       context: indexer
       dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    volumes:
+      - ./nfts:/nfts
 ...
