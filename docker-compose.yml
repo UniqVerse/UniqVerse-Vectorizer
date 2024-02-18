@@ -36,4 +36,6 @@ services:
       - 4000:4000
     volumes:
       - ./nfts:/nfts
+    env_file:
+      - .env
 ...
